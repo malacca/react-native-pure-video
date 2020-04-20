@@ -151,13 +151,9 @@ textTrackStyle={{
 ```
 
 
-## 设置当前要使用的轨道
+## `selectedVideoTrack` / `selectedAudioTrack` / `selectedTextTrack`
 
-可使用以下三个参数设置视频使用的 画面/声音/字幕
-
-`selectedVideoTrack` / `selectedAudioTrack` / `selectedTextTrack`
-
-具体使用方法，下面会详细解释
+设置视频使用的 画面/声音/字幕 轨道，具体使用方法，下面会详细解释
 
 
 # 回调
