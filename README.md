@@ -30,7 +30,7 @@ source={{
 // 仅 uri
 source={{uri: "(http|content|file|asset)://"}}
 
-// 本地视频支持
+// 本地视频支持直接设置
 source={require("./video.mp4")}
 ```
 
@@ -43,7 +43,7 @@ ExoPlayer 支持 `Smoothstreaming` / `HLS` / `MPEG-DASH` / `OTHER`，一般情�
 - mpd: MPEG-DASH (不常用, 如 [test video](http://rdmedia.bbc.co.uk/))
 - default: OTHER (常用, 支持大部分视频格式, 如: mp4, mp3, ogg等)
 
-**`headers` (String)**
+**`headers` (Object)**
 
 请求 `source uri` 为远程地址，支持自定义 Http Request header，格式为 `{key:value, key2:value}`
 
