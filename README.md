@@ -16,9 +16,25 @@
 
 ## `source` (Object)
 
-视频地址，支持 `{uri: "(http|content|file|asset)://"}` 和 `{require("./mediaFile")}`
+视频地址，支持以下格式
 
-## `mediaType` (String)
+```js
+// 携带额外设置
+source={{
+    uri: "(http|content|file|asset)://" || require("./video.mp4"),
+    type: "",
+    headers:{},
+    holdPosition:Boolean
+}}
+
+// 仅 uri
+source={{uri: "(http|content|file|asset)://"}}
+
+// 本地视频支持
+source={require("./video.mp4")}
+```
+
+**`type` (String)**
 
 ExoPlayer 支持 `Smoothstreaming` / `HLS` / `MPEG-DASH` / `OTHER`，一般情况下会根据 `source` 的文件名或 URL 路径自动判断，如果文件名或URL不规范，可通过该参数手动指定。以下为对应 `mediaType` 值
 
@@ -27,15 +43,16 @@ ExoPlayer 支持 `Smoothstreaming` / `HLS` / `MPEG-DASH` / `OTHER`，一般情�
 - mpd: MPEG-DASH (不常用, 如 [test video](http://rdmedia.bbc.co.uk/))
 - default: OTHER (常用, 支持大部分视频格式, 如: mp4, mp3, ogg等)
 
-## `requestHeaders` (Object)
+**`headers` (String)**
 
-请求 `source uri` 支持自定义 Http Request header，格式为 `{key:value, key2:value}`
+请求 `source uri` 为远程地址，支持自定义 Http Request header，格式为 `{key:value, key2:value}`
 
-## `holdPosition` (Boolean)
+**`holdPosition` (Boolean)**
 
 动态修改 `source` 是否保持播放进度， 如同一个视频切换源，保持进度比较好，默认为 false;
 
 （TODO: 同一个视频切换源，保持当前源继续播放，待新播放源可播放时再进行无缝切换）
+
 
 ## `minLoadRetryCount` (Int)
 

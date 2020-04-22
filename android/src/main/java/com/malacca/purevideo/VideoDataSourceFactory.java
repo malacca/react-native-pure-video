@@ -1,7 +1,7 @@
 package com.malacca.purevideo;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 import android.content.Context;
 
 import okhttp3.OkHttpClient;
@@ -14,8 +14,10 @@ import com.facebook.react.modules.network.ForwardingCookieHandler;
 
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 
 class VideoDataSourceFactory implements DataSource.Factory {
@@ -32,6 +34,7 @@ class VideoDataSourceFactory implements DataSource.Factory {
 
     private static DataSource.Factory rawDataSourceFactory = null;
     private static DataSource.Factory httpDataSourceFactory = null;
+    private static HttpDataSource.Factory OKHttpDataSourceFactory = null;
 
     static DataSource.Factory getRawDataSourceFactory(ReactContext context) {
         if (rawDataSourceFactory == null) {
@@ -50,16 +53,21 @@ class VideoDataSourceFactory implements DataSource.Factory {
             CookieJarContainer container = (CookieJarContainer) client.cookieJar();
             ForwardingCookieHandler handler = new ForwardingCookieHandler(context);
             container.setCookieJar(new JavaNetCookieJar(handler));
-            httpDataSourceFactory = new OkHttpDataSourceFactory(
+            OKHttpDataSourceFactory = new OkHttpDataSourceFactory(
                     client,
                     Util.getUserAgent(context, "RNPureVideo"),
                     bandwidthMeter
+            );
+            httpDataSourceFactory = new DefaultDataSourceFactory(
+                    context,
+                    bandwidthMeter,
+                    OKHttpDataSourceFactory
             );
         }
         if (requestHeaders == null) {
             requestHeaders = new HashMap<>();
         }
-        ((OkHttpDataSourceFactory) httpDataSourceFactory).getDefaultRequestProperties().set(requestHeaders);
+        OKHttpDataSourceFactory.getDefaultRequestProperties().set(requestHeaders);
         return httpDataSourceFactory;
     }
 }

@@ -14,18 +14,39 @@ const TextTrackType = {
   VTT: 'text/vtt',
 };
 
-function makeVideoSrc(source, mediaType, headers, holdPosition) {
-  source = resolveAssetSource(source) || {};
+// 1. source={requrie('./path')}
+// 2. source={uri:requrie('./path'), type:"", ...}
+// 3. source={uri:"http||file||content||asset", type:"", ...}
+function makeVideoSrc(source) {
+  let asset, extraProps;
+  if (typeof source === 'number') {
+    asset = source;
+  } else {
+    source = source || {};
+    const {uri, ...leftProps} = source;
+    if (typeof uri === 'number') {
+      asset = uri;
+      extraProps = leftProps;
+    }  
+  }
+  if (asset) {
+    source = resolveAssetSource(source) || {};
+    if (extraProps) {
+      source = {...extraProps, ...source};
+    }
+  }
+  return resolveSourceSrc(source);
+}
+function resolveSourceSrc(source) {
   let uri = source.uri || '';
   if (uri && uri.match(/^\//)) {
     uri = `file://${uri}`;
   }
-  console.log(source);
   const src = {
     uri,
-    type: mediaType ? '.' + mediaType : source.type || '',
-    requestHeaders: stringsOnlyObject(headers),
-    holdPosition: Boolean(holdPosition)
+    type: source.type || '',
+    requestHeaders: stringsOnlyObject(source.headers),
+    holdPosition: Boolean(source.holdPosition)
   };
   if (!IS_ANDROID) {
     src.isNetwork = !!(uri && uri.match(/^https?:/));
@@ -57,6 +78,7 @@ function toTypeString(x) {
   }
 }
 
+// resizeMode=""
 const RESIZE_MODE = {
   "cover": 0,
   "contain": 1,
@@ -67,6 +89,7 @@ function getResizeMode(resizeMode) {
   return resizeMode && resizeMode in RESIZE_MODE ? RESIZE_MODE[resizeMode] : 0;
 }
 
+// textTrackStyle={}
 const TextTrackEdgeType = {
   "none": 0,
   "outline": 1,
@@ -94,6 +117,7 @@ function getTextTrackStyle(style) {
   return trackStyle;
 }
 
+// listeners={} (该属性自动生成)
 const supportEvent = (() => {
   const manager = NativeModules.UIManager.getViewManagerConfig
     ? NativeModules.UIManager.getViewManagerConfig('RCTPureVideo')
@@ -110,28 +134,29 @@ function makeListeners(props) {
   return listeners;
 }
 
+// format props
+function formatProps(nativeProps){
+  const {source, resizeMode, textTrackStyle, ...props} = nativeProps || {};
+  if (source) {
+    props.src = makeVideoSrc(source);
+  }
+  if (resizeMode) {
+    props.resizeMode = getResizeMode(resizeMode);
+  }
+  if (textTrackStyle) {
+    props.textTrackStyle = getTextTrackStyle(textTrackStyle);
+  }
+  return props;
+}
+
 class Video extends React.PureComponent {
   setNativeProps(props) {
-    this.refs.video.setNativeProps(props);
+    this.refs.video.setNativeProps(formatProps(props));
   }
   render() {
-    const {
-      source,
-      mediaType,
-      headers, 
-      holdPosition, 
-      resizeMode, 
-      textTrackStyle,
-      ...jsProps
-    } = this.props;
-    const props = {
-      ...jsProps,
-      src: makeVideoSrc(source, mediaType, headers, holdPosition),
-      resizeMode: getResizeMode(resizeMode),
-      textTrackStyle: getTextTrackStyle(textTrackStyle),
-      listeners: makeListeners(jsProps),
-      ref: "video"
-    }
+    const props = formatProps(this.props);
+    props.listeners = makeListeners(props);
+    props.ref = "video";
     return <RCTPureVideo {...props}/>;
   }
 }

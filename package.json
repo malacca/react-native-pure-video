@@ -1,7 +1,7 @@
 {
   "name": "react-native-pure-video",
   "title": "Video View for React Native",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Video View for react-native",
   "main": "index.js",
   "repository": {
