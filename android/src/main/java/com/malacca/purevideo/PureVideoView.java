@@ -323,9 +323,7 @@ class PureVideoView extends FrameLayout implements
     // VideoListener(exoPlayer.addVideoListener) 实现
     @Override
     public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-        boolean isInitialRatio = aspectLayout.getAspectRatio() == 0;
-        aspectLayout.setAspectRatio(width, height, pixelWidthHeightRatio);
-        if (isInitialRatio) {
+        if (aspectLayout.setAspectRatio(width, height, pixelWidthHeightRatio)) {
             runRelayout();
         }
         eventEmitter.videoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
@@ -1006,8 +1004,7 @@ class PureVideoView extends FrameLayout implements
     }
 
     public void setResizeModeModifier(@VideoResizeMode.Mode int resizeMode) {
-        aspectLayout.setResizeMode(resizeMode);
-        if (initialized) {
+        if (aspectLayout.setResizeMode(resizeMode) && initialized) {
             runRelayout();
         }
     }

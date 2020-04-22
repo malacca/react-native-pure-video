@@ -46,23 +46,16 @@ final class VideoAspectFrameLayout extends FrameLayout {
     /**
      * Set the aspect ratio that this view should satisfy.
      */
-    public void setAspectRatio(int width, int height, float pixelWidthHeightRatio) {
+    public boolean setAspectRatio(int width, int height, float pixelWidthHeightRatio) {
         float widthHeightRatio = height == 0 ? 1 : (width * pixelWidthHeightRatio) / height;
         if (width == videoNativeWidth && height == videoNativeHeight && widthHeightRatio == videoAspectRatio) {
-            return;
+            return false;
         }
         videoNativeWidth = Math.round(width * pixelWidthHeightRatio);
         videoNativeHeight = height;
         videoAspectRatio = widthHeightRatio;
         requestLayout();
-    }
-
-    /**
-     * Get the aspect ratio that this view should satisfy.
-     * @return widthHeightRatio The width to height ratio.
-     */
-    public float getAspectRatio() {
-        return videoAspectRatio;
+        return true;
     }
 
     /**
@@ -70,20 +63,13 @@ final class VideoAspectFrameLayout extends FrameLayout {
      *
      * @param resizeMode The resize mode.
      */
-    public void setResizeMode(@VideoResizeMode.Mode int resizeMode) {
+    public boolean setResizeMode(@VideoResizeMode.Mode int resizeMode) {
         if (this.resizeMode != resizeMode) {
             this.resizeMode = resizeMode;
             requestLayout();
+            return true;
         }
-    }
-
-    /**
-     * Gets the resize mode which can be of value {@link VideoResizeMode.Mode}
-     *
-     * @return resizeMode The resize mode.
-     */
-    public @VideoResizeMode.Mode int getResizeMode() {
-        return resizeMode;
+        return false;
     }
 
     @Override
