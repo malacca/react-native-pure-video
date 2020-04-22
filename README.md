@@ -408,3 +408,24 @@ selectedTextTrack={{
     value:"zh"
 }}
 ```
+
+
+# setNativeProps
+
+一般情况下， props 使用父级组价 state 进行传递，但在某些情况下，为了性能或其他因素考虑，更新 state 不是特别合适，此时可使用 `setNativeProps` 来进行属性更新，支持以上列举的所有属性，但**不支持**回调函数。
+
+```js
+import PureVideo from 'react-native-pure-video';
+
+class App extends React.Component {
+    update = () => {
+        this.refs.video.setNativeProps({
+            //...props
+        })
+    }
+
+    render(){
+        return <PureVideo ref="video" />
+    }
+}
+```
