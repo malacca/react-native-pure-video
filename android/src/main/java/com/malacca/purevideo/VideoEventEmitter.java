@@ -110,9 +110,10 @@ class VideoEventEmitter {
     }
 
     // 加载成功, 在首次 ready 时调用
-    void load(double duration, double currentPosition, int videoWidth, int videoHeight,
+    void load(String playUrl, double duration, double currentPosition, int videoWidth, int videoHeight,
               WritableArray videoTracks, WritableArray audioTracks, WritableArray textTracks) {
         WritableMap event = Arguments.createMap();
+        event.putString("playUrl", playUrl);
         event.putDouble("duration", duration / 1000D);
         event.putDouble("currentTime", currentPosition / 1000D);
         event.putInt("width", videoWidth);

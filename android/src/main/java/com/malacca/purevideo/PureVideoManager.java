@@ -78,13 +78,13 @@ class PureVideoManager extends SimpleViewManager<PureVideoView> {
         // RawSrc
         int identifier = context.getResources().getIdentifier(
                 uriString,
-                "drawable",
+                "raw",
                 context.getPackageName()
         );
         if (identifier == 0) {
             identifier = context.getResources().getIdentifier(
                     uriString,
-                    "raw",
+                    "drawable",
                     context.getPackageName()
             );
         }

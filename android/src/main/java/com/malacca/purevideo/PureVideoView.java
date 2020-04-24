@@ -479,9 +479,10 @@ class PureVideoView extends FrameLayout implements
         Format videoFormat = exoPlayer.getVideoFormat();
         int width = videoFormat != null ? videoFormat.width : 0;
         int height = videoFormat != null ? videoFormat.height : 0;
+        //exoPlayer.get
         eventEmitter.load(
-                exoPlayer.getDuration(), exoPlayer.getCurrentPosition(), width, height,
-                getTrackInfo(C.TRACK_TYPE_VIDEO), getTrackInfo(C.TRACK_TYPE_AUDIO),
+                srcUri.toString(), exoPlayer.getDuration(), exoPlayer.getCurrentPosition(),
+                width, height, getTrackInfo(C.TRACK_TYPE_VIDEO), getTrackInfo(C.TRACK_TYPE_AUDIO),
                 getTrackInfo(C.TRACK_TYPE_TEXT)
         );
     }
