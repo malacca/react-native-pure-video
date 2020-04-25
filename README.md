@@ -299,7 +299,7 @@ onRateChange={ ({
 
 ```js
 onBandwidthUpdate={ ({ 
-    elapsedMs,  // 距上次通知的间隔市场(毫秒)
+    elapsedMs,  // 距上次通知的间隔时长(毫秒)
     bytes,      // 距上次通知, 新加载字节数
     bitrate,    // 带宽
 }) => {
