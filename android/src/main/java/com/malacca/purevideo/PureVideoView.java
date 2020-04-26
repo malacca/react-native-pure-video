@@ -921,17 +921,17 @@ class PureVideoView extends FrameLayout implements
                 // 长期失去焦点(如被其他音乐软件占用), 停止播放并释放焦点
                 case AudioManager.AUDIOFOCUS_LOSS:
                     abandonAudioFocus();
-                    setPlayWhenReady(false);
                     eventEmitter.audioFocusChanged(false);
+                    setPlayWhenReady(false);
                     break;
 
                 // 短暂失去焦点(如电话,短信), 暂停播放但不释放
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     audioIoFocusStatus = focusChange;
+                    eventEmitter.audioFocusChanged(false);
                     if (exoPlayer != null && (isPlayedBeforeLossTransient = exoPlayer.getPlayWhenReady())) {
                         setPlayWhenReady(false);
                     }
-                    eventEmitter.audioFocusChanged(false);
                     break;
 
                 // 临时失去焦点, 允许低音量播放
@@ -945,16 +945,16 @@ class PureVideoView extends FrameLayout implements
                 // 重新获得焦点
                 case AudioManager.AUDIOFOCUS_GAIN:
                     audioIoFocusStatus = focusChange;
+                    eventEmitter.audioFocusChanged(true);
                     if (exoPlayer != null) {
                         if (!muted) {
                             exoPlayer.setVolume(audioVolume * 1);
                         }
                         if (isPlayedBeforeLossTransient) {
                             isPlayedBeforeLossTransient = false;
-                            setPlayWhenReady(true);
+                            setPlayWhenReady(!isPaused);
                         }
                     }
-                    eventEmitter.audioFocusChanged(true);
                     break;
             }
         }
@@ -1012,9 +1012,11 @@ class PureVideoView extends FrameLayout implements
 
     public void setPausedModifier(boolean paused) {
         isPaused = paused;
-        if (initialized && exoPlayer != null) {
-            setPlayWhenReady(!isPaused);
+        // 请求播放, 但不支持后台播放且刚好又在后台, 仅记录状态值, 不实际操作
+        if (!initialized || exoPlayer == null || (!isPaused && isInBackground && !playInBackground)) {
+            return;
         }
+        setPlayWhenReady(!isPaused);
     }
 
     public void setMutedModifier(boolean isMuted) {
