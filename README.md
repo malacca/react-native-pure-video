@@ -14,7 +14,7 @@
 # 属性
 
 
-## `source` (Object)
+### `source` (Object)
 
 视频地址，支持以下格式
 
@@ -54,59 +54,59 @@ ExoPlayer 支持 `Smoothstreaming` / `HLS` / `MPEG-DASH` / `OTHER`，一般情�
 （TODO: 同一个视频切换源，保持当前源继续播放，待新播放源可播放时再进行无缝切换）
 
 
-## `minLoadRetryCount` (Int)
+### `minLoadRetryCount` (Int)
 
 请求 `source` 失败尝试次数
 
-## `maxBitRate` (Int)
+### `maxBitRate` (Int)
 
 请求 `source` 网速限制，默认为0，不限制
 
-## `resizeMode` (String)
+### `resizeMode` (String)
 
 与 RN Image 组件相同，不支持 `repeat`，支持 `cover`、`contain`、`stretch`、`center` 默认为 `cover`
 
-## `paused` (Boolean)
+### `paused` (Boolean)
 
 是否暂停，默认为 false
 
-## `muted` (Boolean)
+### `muted` (Boolean)
 
 是否静音，默认为 false
 
-## `volume` (Float)
+### `volume` (Float)
 
 音量大小，0 ~ 1 之间
 
-## `seek` (Float)
+### `seek` (Float)
 
 seek 到指定播放进度
 
-## `repeat` (Boolean)
+### `repeat` (Boolean)
 
 是否循环播放，默认为 false
 
-## `rate` (Float)
+### `rate` (Float)
 
 播放倍率
 
-## `playInBackground` (Boolean)
+### `playInBackground` (Boolean)
 
 应用处于后台时，是否持续播放，默认为 false
 
-## `disableFocus` (Boolean)
+### `disableFocus` (Boolean)
 
 播放前，用户在使用其他影音软件，默认情况下，会抢占音轨，暂停其他影音软件，待播放完毕释放。如果要禁用该功能，设置该属性为 true
 
-## `useTextureView` (Boolean)
+### `useTextureView` (Boolean)
 
 Android 播放画面可选用的原生组件一般为 `SurfaceView` 或 `TextureView`，默认使用的是 `SurfaceView`，设置该属性为 true， 则使用 `TextureView`
 
-## `progressUpdateInterval` (float)
+### `progressUpdateInterval` (float)
 
 通知播放进度的间隔时长，即回调中的 `onProgress` 的触发间隔时长，单位为毫秒，默认 250
 
-## `bufferConfig` (Object)
+### `bufferConfig` (Object)
 
 ExoPlayer 缓冲设置，该设置一旦设定，最好不要更改，因为 Native 端会重建
 
@@ -124,7 +124,7 @@ ExoPlayer 缓冲设置，该设置一旦设定，最好不要更改，因为 Nat
 ```
 
 
-## `textTracks` (Object)
+### `textTracks` (Object)
 
 外挂字幕设置，其中 `language` 可参考 [ISO_639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)，默认会根据用户系统语言选择对应的字幕。字幕格式支持 `SRT`、`TTML`、`VTT`，建议使用 VTT 格式，兼容性比较好。
 
@@ -149,7 +149,7 @@ import PureVideo, {TextTrackType} from 'react-native-pure-video';
 />
 ```
 
-## `textTrackStyle` (Object)
+### `textTrackStyle` (Object)
 
 字幕样式，仅支持软字幕，软字幕可以是视频内部或外挂的 TextTrack，对于直接合并到画面的硬字幕是不支持的
 
@@ -168,30 +168,30 @@ textTrackStyle={{
 ```
 
 
-## `selectedVideoTrack` / `selectedAudioTrack` / `selectedTextTrack`
+### `selectedVideoTrack` / `selectedAudioTrack` / `selectedTextTrack`
 
 设置视频使用的 画面/声音/字幕 轨道，具体使用方法，下面会详细解释
 
 
 # 回调
 
-## `onIdle`
+### `onIdle`
 
 播放器空闲，此时还没挂载上 source （无参数）
 
-## `onLoadStart`
+### `onLoadStart`
 
 加载开始 （无参数）
 
-## `onReady`
+### `onReady`
 
 播放器准备完毕，此时已加载上第一帧的画面 （无参数）
 
-## `onLoad`
+### `onLoad`
 
 加载完成，此时已缓冲了最小可播放时间，将要开始播放了，后面会解释。
 
-## `onBuffer`
+### `onBuffer`
 
 缓冲状态发生变化，buffer=true 时, 表示缓冲不足，此时可显示加载提示。
 
@@ -203,7 +203,7 @@ onBuffer={ ({
 } }
 ```
 
-## `onProgress`
+### `onProgress`
 
 播放进度通知
 
@@ -217,12 +217,12 @@ onProgress={ ({
 } }
 ```
 
-## `onEnd`
+### `onEnd`
 
 播放结束 （无参数）
 
 
-## `onTimedMetadata`
+### `onTimedMetadata`
 
 HLS 直播流 timed Meta 获取成功，该回调并不是总会触发，需要 m3u8 支持。
 
@@ -241,7 +241,7 @@ metadata: [
 ]
 ```
 
-## `onSizeChange`
+### `onSizeChange`
 
 视频 size 发生变化，一般情况下，会在 onReady 后触发一次。
 
@@ -256,7 +256,7 @@ onSizeChange={ ({
 } }
 ```
 
-## `onPaused`
+### `onPaused`
 
 视频 暂停/播放；paused=true -> 暂停；paused=false -> 播放；
 
@@ -268,7 +268,7 @@ onPaused={ ({
 } }
 ```
 
-## `onSeek`
+### `onSeek`
 
 重新定位播放时间
 
@@ -281,7 +281,7 @@ onSeek={ ({
 } }
 ```
 
-## `onRateChange`
+### `onRateChange`
 
 播放速率发生变化
 
@@ -293,7 +293,7 @@ onRateChange={ ({
 } }
 ```
 
-## `onBandwidthUpdate`
+### `onBandwidthUpdate`
 
 带宽变动通知
 
@@ -307,7 +307,7 @@ onBandwidthUpdate={ ({
 } }
 ```
 
-## `onAudioFocusChanged`
+### `onAudioFocusChanged`
 
 在 `disableFocus` 未禁用的情况下；声音失去焦点、重新获得焦点时触发；比如音乐在后台播放，来电话了，会通知 focused=false，待电话结束，音乐重新播放，会通知 focused=true；当然，也有可能用户打开了其他音乐软件，那么就直接播放停止，不会再次自动获取焦点了，除非用户手动切换过来，重新播放。
 
@@ -319,11 +319,11 @@ onAudioFocusChanged={ ({
 } }
 ```
 
-## `onAudioBecomingNoisy`
+### `onAudioBecomingNoisy`
 
 音频输出设备发生变化，比如插上/拔出耳机，此时，如有必要，可暂停视频。
 
-## `onError`
+### `onError`
 
 发生错误
 
